@@ -1,6 +1,6 @@
 ---
 project: fbclient
-tagline: Firebird ffi binding
+tagline: Firebird Lua+ffi binding
 ---
 
 v2.0 | Firebird 2.5.2 | LuaJIT 2
@@ -11,7 +11,7 @@ A complete ffi binding of the [Firebird] client library.
 
 ### Work in progress
 
-In the meantime, you can use the old pure-Lua alien-based [binding][old fbclient] which is stable and complete.
+In the meantime, you can use the [old fbclient] which is stable and complete.
 
 ##  Summary
 
