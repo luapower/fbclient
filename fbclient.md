@@ -1,6 +1,7 @@
 ---
-project: fbclient
-tagline: Firebird Lua+ffi binding
+project:     fbclient
+tagline:     Firebird Lua+ffi binding
+category:    Databases
 ---
 
 v2.0 | Firebird 2.5.2 | LuaJIT 2
