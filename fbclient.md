@@ -4,8 +4,6 @@ tagline:     Firebird Lua+ffi binding
 category:    Databases
 ---
 
-v2.0 | Firebird 2.5.2 | LuaJIT 2
-
 ## `local fb = require'fbclient'`
 
 A complete ffi binding of the [Firebird] client library.
