@@ -1,6 +1,8 @@
 --encode the request buffer and decode the reply buffer for requesting information about an active transaction.
 
-local info = require'fbclient.info'
+local info = require'fbclient_info'
+local glue = require'glue'
+local INT_SIZE = 4
 
 local info_codes = { --read doc\sql.extensions\README.isc_info_xxx from firebird 2.5 sources for more info!
 	isc_info_tra_id						= 4,  --number: current tran ID number
@@ -12,7 +14,7 @@ local info_codes = { --read doc\sql.extensions\README.isc_info_xxx from firebird
 	isc_info_tra_lock_timeout			= 10, --number: lock timeout value; fb 2.0+
 }
 
-local info_code_lookup = index(info_codes)
+local info_code_lookup = glue.index(info_codes)
 
 local info_buf_sizes = {
 	isc_info_tra_id						= INT_SIZE,

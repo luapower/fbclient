@@ -10,6 +10,8 @@
 
 ]]
 
+do return true end
+
 module(...,require 'fbclient.module')
 
 local alien = require 'alien'

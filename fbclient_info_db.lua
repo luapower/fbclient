@@ -1,9 +1,13 @@
 --encode the request buffer and decode the reply buffer for requesting information about an active connection.
 
-local info = require'fbclient.info'
+local info = require'fbclient_info'
+local glue = require'glue'
+local INT_SIZE = 4
+local MAX_BYTE = 255
+local MAX_SHORT = 32767
 
 --used by decode_timestamp()
-local datetime = require 'fbclient.datetime'
+local datetime = require 'fbclient_datetime'
 
 local info_codes = {
 	isc_info_db_id              = 4, --{db_filename,site_name}
@@ -96,7 +100,7 @@ local info_codes = {
 	fb_info_page_contents		= 113, --get raw page contents; takes page_number as parameter; fb 2.5+
 }
 
-local info_code_lookup = index(info_codes)
+local info_code_lookup = glue.index(info_codes)
 
 local info_buf_sizes = {
 	isc_info_db_id = 1+1+MAX_BYTE+1+MAX_BYTE, --mark,dbfile,hostname

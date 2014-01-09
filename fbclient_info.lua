@@ -36,7 +36,7 @@ function info.encode(info_name,opts,info_codes,info_buf_sizes,encoders)
 end
 
 function info.decode_enum(enum_table)
-	local enum_table_index = index(enum_table) --no synonyms for enum names allowed!
+	local enum_table_index = glue.index(enum_table) --no synonyms for enum names allowed!
 	return function(s)
 		return assert(enum_table_index[struct.unpack('B',s)])
 	end

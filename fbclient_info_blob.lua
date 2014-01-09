@@ -1,6 +1,8 @@
 --encode the request buffer and decode the reply buffer for requesting information about a blob.
 
-local info = require'fbclient.info'
+local info = require'fbclient_info'
+local glue = require'glue'
+local INT_SIZE	   = 4
 
 local info_codes = {
 	isc_info_blob_num_segments	= 4, --total number of segments
@@ -9,7 +11,7 @@ local info_codes = {
 	isc_info_blob_type			= 7, --type of blob (0: segmented, or 1: stream)
 }
 
-local info_code_lookup = index(info_codes)
+local info_code_lookup = glue.index(info_codes)
 
 local info_buf_sizes = {
 	isc_info_blob_num_segments	= INT_SIZE,	-- could not test (returns data_not_ready)

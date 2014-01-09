@@ -26,6 +26,9 @@ local pb = require'fbclient_pb'
 local struct = require'struct'
 local glue = require'glue'
 local asserts = glue.assert
+local MAX_USHORT = 2^16
+local INT_SIZE = 4
+local SHORT_SIZE = 2
 
 --Attach SPB = Attach Service Parameter Block: used for attaching to the Service Manager.
 local attach_spb_codes = {
@@ -483,14 +486,14 @@ local isc_action_svc_add_license_codes = {
 	isc_spb_lic_id	= 6,
 }
 
-local isc_action_svc_add_license_codes = {
+local isc_action_svc_add_license_encoders = {
 	isc_spb_lic_key = encode_string,
 	isc_spb_lic_id  = encode_string,
 }
 
 --del license action; same as adding
-local isc_action_svc_del_license_codes = isc_action_svc_add_license_codes
-local isc_action_svc_del_license_encoders = isc_action_svc_add_license_encoders
+local isc_action_svc_remove_license_codes = isc_action_svc_add_license_codes
+local isc_action_svc_remove_license_encoders = isc_action_svc_add_license_encoders
 
 --get db statistics action
 local isc_action_svc_db_stats_codes = {
@@ -604,7 +607,7 @@ local action_options_codes = {
 	isc_action_svc_add_user			= isc_action_svc_add_user_codes,
 	isc_action_svc_delete_user		= isc_action_svc_delete_user_codes,
 	isc_action_svc_modify_user		= isc_action_svc_modify_user_codes,
-	isc_action_svc_display_user		= isc_action_svc_display_user_codes,
+	isc_action_svc_display_user   = isc_action_svc_display_user_codes,
 	isc_action_svc_properties		= isc_action_svc_properties_codes,
 	isc_action_svc_add_license		= isc_action_svc_add_license_codes,
 	isc_action_svc_remove_license	= isc_action_svc_remove_license_codes,
@@ -614,12 +617,12 @@ local action_options_codes = {
 	isc_action_svc_trace_start		= isc_action_svc_trace_start_codes,
 	isc_action_svc_trace_stop		= isc_action_svc_trace_stop_codes,
 	isc_action_svc_trace_suspend	= isc_action_svc_trace_suspend_codes,
-	isc_action_svc_trace_resume		= isc_action_svc_trace_resume_codes,
+	isc_action_svc_trace_resume	= isc_action_svc_trace_resume_codes,
 	isc_action_svc_trace_list		= isc_action_svc_trace_list_codes,
 	isc_action_svc_set_mapping		= isc_action_svc_set_mapping_codes,
-	isc_action_svc_drop_mapping		= isc_action_svc_drop_mapping_codes,
+	isc_action_svc_drop_mapping	= isc_action_svc_drop_mapping_codes,
 	isc_action_svc_nbak				= isc_action_svc_nbak_codes,
-	isc_action_svc_nrest			= isc_action_svc_nrest_codes,
+	isc_action_svc_nrest          = isc_action_svc_nrest_codes,
 }
 
 --table of actions and corresponding option encoder tables
@@ -720,7 +723,7 @@ local info_codes = {
 	isc_info_svc_get_users			= 68,	--get user information from isc_action_svc_display_users
 }
 
-local info_code_lookup = index(info_codes)
+local info_code_lookup = glue.index(info_codes)
 
 local info_buf_sizes = {
 	isc_info_svc_svr_db_info		= MAX_USHORT,
@@ -751,7 +754,7 @@ local info_end_codes = {
 	isc_info_svc_timeout     = 64, --timeout expired
 }
 
-local info_end_code_lookup = index(info_end_codes)
+local info_end_code_lookup = glue.index(info_end_codes)
 
 --decoders used in the info buffer filled by query()
 
@@ -769,7 +772,7 @@ local function decode_string(buf,size,ofs)
 end
 
 function decode_enum(option, enum_table)
-	local enum_table_index = index(enum_table) --no synonyms for enum names allowed!
+	local enum_table_index = glue.index(enum_table) --no synonyms for enum names allowed!
 	return function(buf,size,ofs)
 		local c,ofs = struct.unpack('B',buf,size,ofs)
 		return asserts(enum_table_index[c],'invalid code %d returned by server for option %s',c,option),ofs
@@ -779,7 +782,7 @@ end
 --only used by isc_info_svc_svr_db_info and presumably by isc_info_svc_get_license
 local function decode_cluster(option, codes, decoders)
 	local isc_info_flag_end = 127
-	local code_index = index(codes)
+	local code_index = glue.index(codes)
 	return function(buf,size,ofs)
 		local t = {}
 		local code
@@ -803,7 +806,7 @@ end
 --the difference to decode_cluster() is that you get the data length at the
 --beginning instead of, or in addition to terminating isc_info_flag_end code
 local function decode_sized_cluster(option, codes, decoders)
-	local code_index = index(codes)
+	local code_index = glue.index(codes)
 	local isc_info_flag_end = 127
 	return function(buf,size,ofs)
 		local t = {}
@@ -826,7 +829,7 @@ local function decode_sized_cluster(option, codes, decoders)
 end
 
 local function decode_bitmask(bits)
-	local bits_index = index(bits)
+	local bits_index = glue.index(bits)
 	return function(buf,size,ofs)
 		local n,ofs = struct.unpack('<I',buf,size,ofs)
 		local t = {}
@@ -918,7 +921,7 @@ local isc_info_svc_get_config_codes = {
 	ISCCFG_DUMMY_INTRVL_KEY = 18,
 }
 
-local isc_info_svc_get_config_code_lookup = index(isc_info_svc_get_config_codes)
+local isc_info_svc_get_config_code_lookup = glue.index(isc_info_svc_get_config_codes)
 
 --not tested --firebird doesn't return this info code at all
 local function decode_get_config(buf,size,ofs)
@@ -1118,6 +1121,10 @@ end
 	or chunks() iterators to get their output either line by line or chunk by chunk.
 
 ]=]
+
+
+do return end ----- TODO: finish this
+
 
 local binding = require 'fbclient.binding'
 local svapi = require 'fbclient.status_vector'
