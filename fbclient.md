@@ -1,7 +1,6 @@
 ---
 project:     fbclient
 tagline:     Firebird Lua+ffi binding
-category:    Databases
 ---
 
 ## `local fb = require'fbclient'`
