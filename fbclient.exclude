@@ -1,0 +1,12 @@
+*
+!/bin/
+!/csrc/
+!/bin/mingw32/
+!/bin/linux32/
+!/media/
+
+!/fbclient*
+!/bin/mingw32/fbclient*
+!/bin/linux32/*libfbclient*
+!/csrc/fbclient/
+!/csrc/fbclient/**
