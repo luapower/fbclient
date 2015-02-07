@@ -43,7 +43,7 @@ In the meantime, you can use the [old fbclient] which is stable and complete.
   * a real [IBExpert][IDE]
 		(made by real programmers who don't have time to build a website)
 
-If you don't need all this, there's also [bindings](mysql.html) for the most _popular_ database in the world.
+If you don't need all this, there's also [bindings][mysql] for the most _popular_ database in the world.
 
 
 [Firebird]:     http://www.firebirdsql.org/
