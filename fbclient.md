@@ -7,7 +7,7 @@ tagline: firebird database client
 
 A complete ffi binding of the [Firebird] client library.
 
-### Work in progress
+## Work in progress
 
 In the meantime, you can use the [old fbclient] which is stable and complete.
 
