@@ -771,7 +771,7 @@ local function decode_string(buf,size,ofs)
 	return struct.unpack('<Hc0',buf,size,ofs)
 end
 
-function decode_enum(option, enum_table)
+local function decode_enum(option, enum_table)
 	local enum_table_index = glue.index(enum_table) --no synonyms for enum names allowed!
 	return function(buf,size,ofs)
 		local c,ofs = struct.unpack('B',buf,size,ofs)

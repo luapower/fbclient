@@ -86,7 +86,7 @@ local records_cluster_codes = {
 	isc_info_req_delete_count = 16,
 }
 
-records_cluster_code_lookup = glue.index(records_cluster_codes)
+local records_cluster_code_lookup = glue.index(records_cluster_codes)
 
 local decoders = {
 	isc_info_sql_select			= info.decode_boolean,
