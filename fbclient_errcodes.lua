@@ -1,7 +1,9 @@
---isc error codes: use it as constant table for isc_errors, or when you don't have firebird.msg installed
---on the client. gives you a clue about the error in absence of a full error message. not loaded by default.
---Based on the latest (checked May 15, 2013) include/gen/iberror.h located at:
-	--http://firebird.cvs.sourceforge.net/viewvc/*checkout*/firebird/firebird2/src/include/gen/iberror.h
+--isc error codes: use it as constant table for isc_errors, or when you
+--don't have firebird.msg installed on the client.
+--Gives you a clue about the error in absence of a full error message.
+--NOT loaded by default!
+--Based on include/gen/iberror.h downloaded May 15, 2013 from:
+--  http://firebird.cvs.sourceforge.net/viewvc/*checkout*/firebird/firebird2/src/include/gen/iberror.h
 
 return require'glue'.index{
 	isc_arith_except                    = 335544321,
