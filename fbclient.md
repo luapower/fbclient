@@ -1,5 +1,4 @@
 ---
-project: fbclient
 tagline: firebird database client
 ---
 
